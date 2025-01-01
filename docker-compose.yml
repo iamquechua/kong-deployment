@@ -102,7 +102,21 @@ services:
       - kong-net
     volumes:
       - kong_data:/var/lib/postgresql/data
-
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    environment:
+      - KEYCLOAK_HOSTNAME=api-gateway.dounotech.com
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - kong
+    networks:
+      - kong-net
 
 volumes:
   kong_data: {}
